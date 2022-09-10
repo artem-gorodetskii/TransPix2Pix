@@ -67,7 +67,7 @@ The style encoder is trained on a subset of the prepared dataset separated into 
   The generator is trained in a transfer learning configuration using embedding vectors produced by the style encoder. Style-Pre-Net serves as a bridge between these two modules  stimulating the extraction of meaningful style characteristics. Moreover, it plays a role of  information bottleneck, which is essential for generalization performance of the decoder module, especially for style adaptation. The block diagram of the Style-Pre-Net network is shown in Figure 4. Before concatenation with the input of each decoder block the output of the Style-Pre-Net network is splitted into 8 parts and transformed into 3-dimensional tensors (repeated along the spatial dimension). This concatenation technique allows us to use style features that are relevant only for a particular decoding stage. We found that all 8 parts of the obtained representation contain unique style characteristics while preserving the properties of the initial embedding space. 
   
 <p align="center">
-  <img alt="img-name" src="assets/style_prenet.png" width="300">
+  <img alt="img-name" src="assets/style_prenet.png" width="200">
   <br>
     <em>Fig. 4. The block diagram of the Style-Pre-Net module.</em>
 </p>
@@ -91,7 +91,7 @@ During inference, we use average style embeddings to generate images that corres
     <em>Fig. 5. Generated examples. Input sketches are shown on the left, while target images (only for validation data) are shown to the right side of the figure.</em>
 </p>
 
-### Conclusion and Further Work
+### Conclusions
 We have presented a new hybrid architecture, called TransPix2Pix, which merges the benefits of Transformers and convolutional neural networks for sketch-to-photo translation tasks. Our experiments reveal that integration of transformer encoders and self-attention mechanisms into a U-Net-based architecture leads to improved quality as well as high detalization of reconstructed images. We have used the developed system for translating cat sketches into photorealistic images. 
 
 In addition, we propose a novel approach to style adaptation based on a pretrained style encoder that is used to transfer specific characteristics from target to predicted image. Potentially, the proposed technique can employ a set of different style encoders connected with the generator decoder through the Style-Pre-Net module. In this configuration, each encoder should operate in an embedding space that is responsible for specific characteristics, for example, cat breed, eye color, background and so on. 
