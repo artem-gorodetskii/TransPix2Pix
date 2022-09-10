@@ -35,7 +35,7 @@ The style encoder is trained on a subset of the prepared dataset separated into 
 <p align="center">
   <img alt="img-name" src="assets/umap_projection.png" width="200">
   <br>
-    <em>**Fig. 1.** U-Map projection of the computed style embeddings. Each color corresponds to a different cat style.</em>
+    <em>Fig. 1. U-Map projection of the computed style embeddings. Each color corresponds to a different cat style.</em>
 </p>
 
 ### Attention Mechanisms
@@ -51,7 +51,7 @@ The style encoder is trained on a subset of the prepared dataset separated into 
 <p align="center">
   <img alt="img-name" src="assets/model_block_diagram.png" width="500">
   <br>
-    <em>**Fig. 2.** The block diagram of the proposed generator architecture.</em>
+    <em>Fig. 2. The block diagram of the proposed generator architecture.</em>
 </p>
 
   The generator combines encoder and decoder modules with the style encoder network. As in the original U-Net generator we apply skip connections between encoder and decoder blocks to reuse encoded features during the decoding process. We employ custom convolutional blocks combined with transformer and self-attention blocks. The diagram in Figure 3 shows structure of developed convolutional blocks, referred to as DownConvBlock, UpConvBlock and UpConvBlock*. As you can see, we used a combination of convolution layers equipped with channel and spatial Squeeze & Excitation mechanisms, residual connections, BatchNormalization, ReLU and LeakyReLU activations and Dropouts. UpConvBlock* contains a ConvBottleneck block serving as an information bottleneck that enhances generalization properties of the decoder module.
@@ -59,7 +59,7 @@ The style encoder is trained on a subset of the prepared dataset separated into 
 <p align="center">
   <img alt="img-name" src="assets/model_blocks.png" width="500">
   <br>
-    <em>**Fig. 3.** The block diagram of the proposed convolutional blocks.</em>
+    <em>Fig. 3. The block diagram of the proposed convolutional blocks.</em>
 </p>
 
   TransformerBlock and Self-AttentionBlock operate on sequences of convolutional features obtained from outputs of convolution blocks as shown in Figure 2. Before passing the processed sequences to the next convolution block they are transformed back into 3-dimensional tensors. TransformerBlock represents a standard transformer encoder composed of 6 layers with Multi-head Attention mechanisms (with 8 heads). Each transformer block utilizes trainable position embeddings to take into account the order of the  input feature sequence. Self-AttentionBlock employs a simple dot-product self-attention mechanism without scaling factor and any projections.
@@ -69,7 +69,31 @@ The style encoder is trained on a subset of the prepared dataset separated into 
 <p align="center">
   <img alt="img-name" src="assets/style_prenet.png" width="300">
   <br>
-    <em>**Fig. 4.** The block diagram of the Style-Pre-Net module.</em>
+    <em>Fig. 4. The block diagram of the Style-Pre-Net module.</em>
 </p>
 
+### GAN Loss Function
+The TransPix2Pix loss function is based on the sum of discriminator and generator losses proposed in the [pix2pix paper](https://arxiv.org/pdf/1611.07004.pdf). In contrast to the original implementation, we add an additional term to the generator loss. This term represents the feature reconstruction loss described in the [Perceptual Losses for Real-Time Style Transfer and Super-Resolution paper](https://arxiv.org/pdf/1603.08155.pdf). Generally speaking, this technique encourages output and target images to have similar hidden representations computed by the loss network making them perceptually similar to each other. In our implementation we use the VGG16 network pretrained on the ImageNet dataset. We have determined that this configuration leads to improved reconstruction quality.
 
+### Training Setup
+The style encoder is trained using the Adam optimizer with a batch size of 64, a weight decay of 10-4 and an initial learning rate of 10-3 exponentially decaying each 1000 steps with a decay rate of 0.9. We use CosFace hyperparameters s and m of  5 and 0.35.
+
+The TransPix2Pix model is trained during 400k steps in a transfer leaning configuration using style embeddings extracted from target images. We apply the Adam optimizer with a batch size of 4, a weight decay of 10-6 and a gradient clipping threshold of 1, maintaining exponential moving averages of the trained parameters with a smoothing value of 0.98. We use an initial learning rate of 0.0002 that is decreased by half every 100k steps.
+
+As suggested in the pix2pix paper, we don't use BatchNormalization in the first encoder block and apply Dropout (with probability of 0.3) only to the first three decoder blocks. Also we use the Dropout2d probability of 0.2 for the first and second ConvBottleneck blocks.
+
+### Inference Examples
+During inference, we use average style embeddings to generate images that correspond to a specific cat class. Figure 5 shows 6 generated examples, 3 of which are taken from the validation dataset and the other 3 represent hand-drawn sketches.
+
+<p align="center">
+  <img alt="img-name" src="assets/inference_examples.png" width="800">
+  <br>
+    <em>Fig. 5. Generated examples. Input sketches are shown on the left, while target images (only for validation data) are shown to the right side of the figure.</em>
+</p>
+
+### Conclusion and Further Work
+We have presented a new hybrid architecture, called TransPix2Pix, which merges the benefits of Transformers and convolutional neural networks for sketch-to-photo translation tasks. Our experiments reveal that integration of transformer encoders and self-attention mechanisms into a U-Net-based architecture leads to improved quality as well as high detalization of reconstructed images. We have used the developed system for translating cat sketches into photorealistic images. 
+
+In addition, we propose a novel approach to style adaptation based on a pretrained style encoder that is used to transfer specific characteristics from target to predicted image. Potentially, the proposed technique can employ a set of different style encoders connected with the generator decoder through the Style-Pre-Net module. In this configuration, each encoder should operate in an embedding space that is responsible for specific characteristics, for example, cat breed, eye color, background and so on. 
+
+Further research will focus on application of TransPix2Pix to other image-to-image translation tasks and experiments with style embeddings.
