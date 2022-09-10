@@ -1,0 +1,18 @@
+device: cuda:0
+learning_rate: 0.0002 
+batch_size: 4
+num_workers: 1
+L1_lambda: 100 
+num_epochs: 400
+save_model: True  
+eval_every: 100  # iterations
+save_every: 17500   # iterations
+milestones_disc: [100000, 200000, 300000] # iterations
+milestones_gen: [100000, 200000, 300000]  # iterations
+gamma: 0.5
+grad_clip: 1
+norm_type: 'BatchNorm' #'BatchNorm' or 'GroupNorm'
+weight_decay: 0.000001
+
+DATASET_PATH: 'dataset'
+models_dir: 'models'
