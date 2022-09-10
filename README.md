@@ -31,7 +31,9 @@ The output of the last block is flattened and processed by two linear layers (wi
 
 The proposed style encoder operates in a 256-dimensional latent space.  We have trained several versions of the model and determined that this configuration leads to better performance in terms of classification accuracy and embedding quality. To evaluate the quality of constructed latent space we estimate equal error rates, which are computed using cosine similarity scores by pairing each embedding vector with each class centroid. Figure 1 shows the [U-Map](https://arxiv.org/pdf/1802.03426.pdf) projection of the computed style embeddings.
 
-![](assets/umap_projection.png)
-Fig. 1. U-Map projection of the computed style embeddings. Each color corresponds to a different cat style. 
+<div align="center">
+  <img src="assets/umap_projection.png" width="200" />
+  <em>Fig. 1. U-Map projection of the computed style embeddings. Each color corresponds to a different cat style. </em>
+</div>
 
 
