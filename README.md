@@ -34,7 +34,7 @@ The style encoder is trained on a subset of the prepared dataset separated into 
 
 
 <p align="center">
-  <img alt="img-name" src="assets/umap_projection.png" width="200">
+  <img alt="img-name" src="assets/umap_projection.png" width="400">
   <br>
     <em>Fig. 1. U-Map projection of the computed style embeddings. Each color corresponds to a different cat style.</em>
 </p>
@@ -50,7 +50,7 @@ The style encoder is trained on a subset of the prepared dataset separated into 
   The proposed TransPix2Pix system represents a conditional GAN composed of generator and discriminator models. The discriminator is a convolutional “PatchGAN” classifier proposed in the [pix2pix paper](https://arxiv.org/pdf/1611.07004.pdf), while the generator is based on a hybrid [U-Net architecture](https://arxiv.org/pdf/1505.04597.pdf). The block diagram of the generator architecture is illustrated in Figure 2.
 
 <p align="center">
-  <img alt="img-name" src="assets/model_block_diagram.png" width="500">
+  <img alt="img-name" src="assets/model_block_diagram.png" width="800">
   <br>
     <em>Fig. 2. The block diagram of the proposed generator architecture.</em>
 </p>
@@ -58,7 +58,7 @@ The style encoder is trained on a subset of the prepared dataset separated into 
   The generator combines encoder and decoder modules with the style encoder network. As in the original U-Net generator we apply skip connections between encoder and decoder blocks to reuse encoded features during the decoding process. We employ custom convolutional blocks combined with transformer and self-attention blocks. The diagram in Figure 3 shows structure of developed convolutional blocks, referred to as DownConvBlock, UpConvBlock and UpConvBlock*. As you can see, we used a combination of convolution layers equipped with channel and spatial Squeeze & Excitation mechanisms, residual connections, BatchNormalization, ReLU and LeakyReLU activations and Dropouts. UpConvBlock* contains a ConvBottleneck block serving as an information bottleneck that enhances generalization properties of the decoder module.
   
 <p align="center">
-  <img alt="img-name" src="assets/model_blocks.png" width="500">
+  <img alt="img-name" src="assets/model_blocks.png" width="800">
   <br>
     <em>Fig. 3. The block diagram of the proposed convolutional blocks.</em>
 </p>
