@@ -50,7 +50,7 @@ The style encoder is trained on a subset of the prepared dataset separated into 
   The proposed TransPix2Pix system represents a conditional GAN composed of generator and discriminator models. The discriminator is a convolutional “PatchGAN” classifier proposed in the [pix2pix paper](https://arxiv.org/pdf/1611.07004.pdf), while the generator is based on a hybrid [U-Net architecture](https://arxiv.org/pdf/1505.04597.pdf). The block diagram of the generator architecture is illustrated in Figure 2.
 
 <p align="center">
-  <img alt="img-name" src="assets/model_block_diagram.png" width="1000">
+  <img alt="img-name" src="assets/model_block_diagram.png" width="800">
   <br>
     <em>Fig. 2. The block diagram of the proposed generator architecture.</em>
 </p>
@@ -58,7 +58,7 @@ The style encoder is trained on a subset of the prepared dataset separated into 
   The generator combines encoder and decoder modules with the style encoder network. As in the original U-Net generator we apply skip connections between encoder and decoder blocks to reuse encoded features during the decoding process. We employ custom convolutional blocks combined with transformer and self-attention blocks. The diagram in Figure 3 shows structure of developed convolutional blocks, referred to as DownConvBlock, UpConvBlock and UpConvBlock*. As you can see, we used a combination of convolution layers equipped with channel and spatial Squeeze & Excitation mechanisms, residual connections, BatchNormalization, ReLU and LeakyReLU activations and Dropouts. UpConvBlock* contains a ConvBottleneck block serving as an information bottleneck that enhances generalization properties of the decoder module.
   
 <p align="center">
-  <img alt="img-name" src="assets/model_blocks.png" width="1000">
+  <img alt="img-name" src="assets/model_blocks.png" width="800">
   <br>
     <em>Fig. 3. The block diagram of the proposed convolutional blocks.</em>
 </p>
@@ -87,7 +87,7 @@ As suggested in the pix2pix paper, we don't use BatchNormalization in the first 
 During inference, we use average style embeddings to generate images that correspond to a specific cat class. Figure 5 shows 6 generated examples, 3 of which are taken from the validation dataset and the other 3 represent hand-drawn sketches.
 
 <p align="center">
-  <img alt="img-name" src="assets/inference_examples.png" width="1000">
+  <img alt="img-name" src="assets/inference_examples.png" width="800">
   <br>
     <em>Fig. 5. Generated examples. Input sketches are shown on the left, while target images (only for validation data) are shown to the right side of the figure.</em>
 </p>
